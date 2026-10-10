@@ -1,0 +1,34 @@
+; ============================================================
+; By Daived 
+; Github: https://github.com/McDaived 
+; ============================================================
+; Auto-discovered signatures for: SoTGame
+; UE Version: 4.x
+; Generated: 2026-10-09 01:35:27
+; ============================================================
+;
+; Copy the block below into [SoTGame] in games.ini
+; (create the section if it doesn't exist)
+;
+[SoTGame]
+UE = 4.x
+IsUE5 = false
+
+; Offsets – fill these in manually or copy from a known profile in games.ini
+; FNameEntry.HeaderSize  = 0x??
+; UObject.Index          = 0x??
+
+; Pattern matched: primary (from config/built-in)
+GObjects.Sig       = 4C 8B 15 ?? ?? ?? ?? 8B 5D 10
+GObjects.PtrOffset = -4
+GObjects.PtrExtra  = 3
+
+; Pattern matched: primary (from config/built-in)
+GNames.Sig         = 48 89 1D ?? ?? ?? ?? 48 8B 5C 24 20 48 83 C4 28
+GNames.PtrOffset   = 4
+GNames.PtrExtra    = 3
+
+; ============================================================
+; Once you have the offsets set, remove the comment (;) from the
+; offset lines and this file will be auto-loaded next run.
+; ============================================================

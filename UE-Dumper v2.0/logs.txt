@@ -1,0 +1,61 @@
+[01:35:27] [INFO ] === UE Dumper ===
+[01:35:27] [WARN ] [!] Kernel driver not loaded — falling back to usermode reads.
+[01:35:27] [INFO ] [+] SoTGame.exe Found! ( PID 7028 )
+[01:35:27] [INFO ]     Reader mode : usermode (OpenProcess + ReadProcessMemory)
+[01:35:27] [INFO ] [+] Starting dump....
+[01:35:27] [INFO ] [config] games.ini: added 8 new builtin profile(s)
+[01:35:27] [INFO ] [config] Loaded 'SoTGame' from games.ini  (UE4.x)
+[01:35:27] [INFO ]   Game                : SoTGame.exe
+[01:35:27] [INFO ]   UE5 mode            : no
+[01:35:27] [INFO ]   GObjects  found  @ section+0x0900B170  (203000 objects)
+[01:35:27] [INFO ]   GNames    found  @ section+0x09006B98
+[01:35:27] [INFO ]   Signatures saved to signatures.txt
+[01:35:27] [INFO ]   Auto-found sigs saved -> C:\Users\PC\Downloads\UE-Dumper v2.0_[unknowncheats.me]_\SoTGame_sigs.txt
+[01:35:27] [INFO ]   Running runtime offset discovery...
+[01:35:27] [INFO ]   [AutoOffsets] Collecting samples (400 max)...
+[01:35:27] [INFO ]   [AutoOffsets] Probing 400 objects x 0x80 bytes
+[01:35:27] [INFO ]   [AutoOffsets]   Index  0x14  (100%)
+[01:35:27] [INFO ]   [AutoOffsets]   Class  0x00  (100%)
+[01:35:27] [INFO ]   [AutoOffsets]   Name   0x24  (100%)
+[01:35:27] [INFO ]   [AutoOffsets]   Outer  0x68  (100%)
+[01:35:27] [INFO ]   [AutoOffsets] Overall confidence 100%
+[01:35:27] [INFO ]   [AutoOffsets] Applying offsets (profile wins, autodetect fills gaps):
+[01:35:27] [WARN ]   [AutoOffsets]   UObject.Outer          profile=0x18  discovered=0x68  (keeping profile)
+[01:35:27] [INFO ]   Scanning for UE engine functions...
+[01:35:28] [INFO ]   [                       ProcessEvent]  RVA=0x232B360  (PE-A (SoT/UE4.26+))
+[01:35:28] [INFO ]   [                   StaticLoadObject]  RVA=0x2345CD0  (SLO-D (from SigScanner))
+[01:35:28] [INFO ]   [                   StaticFindObject]  RVA=0x2346240  (SFO-D (from SigScanner))
+[01:35:28] [INFO ]   [               StaticFindObjectFast]  RVA=0x23457E0  (SFOF-D (from SigScanner))
+[01:35:28] [INFO ]   [                         PostRender]  RVA=0x22EFD30  (PR--D (from SigScanner))
+[01:35:28] [INFO ]   [                         SpawnActor]  RVA=0x340A8C0  (SA--D (from SigScanner))
+[01:35:28] [WARN ]   [                 GetPlayerViewPoint]  NOT FOUND
+[01:35:28] [INFO ]   [              GetActorEyesViewPoint]  RVA=0x30F0D00  (GAEVP-D (from SigScanner))
+[01:35:28] [INFO ]   [           LineTraceSingleByChannel]  RVA=0x32137E0  (LTSC-D (from SigScanner))
+[01:35:28] [INFO ]   [               SweepSingleByChannel]  RVA=0x321A290  (SSC--D (from SigScanner))
+[01:35:28] [INFO ]   [              OverlapMultiByChannel]  RVA=0x3215310  (OMC-D (from SigScanner))
+[01:35:28] [INFO ]   [                     GetTimeSeconds]  RVA=0x37F5BC0  (GTS--D (from SigScanner))
+[01:35:28] [INFO ]   [                      DrawDebugLine]  RVA=0x3338860  (DDL-D (from SigScanner))
+[01:35:28] [INFO ]   [                    DrawDebugSphere]  RVA=0x3339040  (DDS-D (from SigScanner))
+[01:35:28] [INFO ]   [                   SetActorLocation]  RVA=0x30FA180  (SAL-D (from SigScanner))
+[01:35:28] [INFO ]   [                  GetActorTransform]  RVA=0x30F72C0  (GAT-D (from SigScanner))
+[01:35:28] [WARN ]   [                    GameEngine_Tick]  NOT FOUND
+[01:35:28] [INFO ]   [              ProcessRemoteFunction]  RVA=0x30B2600  (PRF-D (from SigScanner))
+[01:35:28] [INFO ]   [    CallFunctionByNameWithArguments]  RVA=0x2321FB0  (CFNA-D (from SigScanner))
+[01:35:28] [INFO ]   Functions found: 17/19
+[01:35:28] [INFO ] 
+[01:35:30] [INFO ]   Total names : 372615
+[01:35:37] [INFO ]   Total objects : 203000
+[01:35:37] [INFO ]   Packages : 311  (wiped 2447 empty)
+[01:35:44] [INFO ]   Saved : 311/311
+[01:35:48] [INFO ]   [vtable=pattern]  ProcessEvent                         RVA=0x232B360
+[01:35:48] [INFO ]   [vtable index]    ProcessEvent                         index=0x37  [heuristic]
+[01:35:48] [INFO ]   [vtable=pattern]  PostRender                           RVA=0x22EFD30
+[01:35:48] [INFO ]   [vtable index]    PostRender                           index=0xF  [heuristic]
+[01:35:48] [WARN ]   [vtable>pattern!] ProcessRemoteFunction                vtable=0x3301D60  pattern=0x30B2600  delta=0x24F760
+[01:35:48] [INFO ]   [vtable index]    ProcessRemoteFunction                index=0x5D  [heuristic]
+[01:35:48] [INFO ]   VTable functions resolved (3/3) -> vtable_funcs.txt
+[01:35:48] [INFO ]   Function addresses saved (17/19) -> funcs.txt
+[01:35:55] [INFO ]   VTables dumped: 9884 unique vtables -> vtables.txt
+[01:35:55] [INFO ]   Offsets written -> offsets.txt  (game.ini:18 autodetect:0 missing:0)
+[01:35:55] [INFO ] 
+Done.
