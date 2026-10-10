@@ -1,0 +1,30 @@
+2026-10-08 19:33:36 *NORMAL*     Started on Windows 10.0.0.26200 x64. Driver status: 0xC0000225
+2026-10-08 19:33:50 *CRITICAL*   Injection initiated. Mode: 0, process type: 0, pid: 4984, mmap flags: 0x0, erasePE: 0, unlink: 0, thread hijack: 0, init routine: '', init arg: ''
+2026-10-08 19:33:50 *CRITICAL*   Injecting image 'C:\Users\PC\Downloads\IsleInternal\IsleInternal.dll'
+2026-10-08 19:34:28 *ERROR*      Failed to load BlackBone driver:
+
+Windows cannot verify the digital signature for this file. A recent hardware or software change might have installed a file that is signed incorrectly or damaged, or that might be malicious software from an unknown source.
+
+
+2026-10-08 20:36:22 *NORMAL*     Started on Windows 10.0.0.26200 x64. Driver status: 0xC0000225
+2026-10-08 20:36:25 *ERROR*      Failed to load BlackBone driver:
+
+Windows cannot verify the digital signature for this file. A recent hardware or software change might have installed a file that is signed incorrectly or damaged, or that might be malicious software from an unknown source.
+
+
+2026-10-10 21:56:46 *NORMAL*     Started on Windows 10.0.0.26200 x64. Driver status: 0xC0000225
+2026-10-10 21:56:46 *ERROR*      File "C:\Users\PC\Downloads\IsleInternal\IsleInternal.dll" is not a valid PE image
+
+2026-10-10 21:56:51 *NORMAL*     Started on Windows 10.0.0.26200 x64. Driver status: 0xC0000225
+2026-10-10 21:56:51 *ERROR*      File "C:\Users\PC\Downloads\IsleInternal\IsleInternal.dll" is not a valid PE image
+2026-10-10 21:57:12 *CRITICAL*   Injection initiated. Mode: 0, process type: 0, pid: 7176, mmap flags: 0x0, erasePE: 0, unlink: 0, thread hijack: 0, init routine: '', init arg: ''
+2026-10-10 21:57:12 *CRITICAL*   Injecting image 'C:\Users\PC\Downloads\DUMPY\Dumper 7 + Xenos\Dumper-7.dll'
+2026-10-10 21:57:12 *ERROR*      Invalid failure status: 0x0
+2026-10-10 21:57:12 *ERROR*      Failed to inject image 'C:\Users\PC\Downloads\DUMPY\Dumper 7 + Xenos\Dumper-7.dll'.
+Error code 0xC0000135
+2026-10-10 21:57:22 *CRITICAL*   Injection initiated. Mode: 1, process type: 0, pid: 7176, mmap flags: 0x0, erasePE: 0, unlink: 0, thread hijack: 0, init routine: '', init arg: ''
+2026-10-10 21:57:22 *CRITICAL*   Injecting image 'C:\Users\PC\Downloads\DUMPY\Dumper 7 + Xenos\Dumper-7.dll'
+2026-10-10 21:57:22 *ERROR*      Failed to inject image using manual map, status: 0xC0000138
+2026-10-10 21:57:22 *ERROR*      Failed to inject image 'C:\Users\PC\Downloads\DUMPY\Dumper 7 + Xenos\Dumper-7.dll'.
+Error code 0xC0000138
+
