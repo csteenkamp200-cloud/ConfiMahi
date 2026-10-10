@@ -1,0 +1,417 @@
+================================================================================
+ MAHI — COMPLETE PROJECT REFERENCE
+================================================================================
+
+A full walkthrough of every folder, file, and data flow in the project.
+Save this next to secrets.txt for future reference.
+
+
+================================================================================
+ 1. BIG PICTURE
+================================================================================
+
+  USER SIDE                                  YOUR SIDE
+  ---------                                  ---------
+
+  Browser:                                   IsleExtServer\
+    mahi-production-059f.up.railway.app  <--  server.js (hosted on Railway)
+    |-- landing page (Mahi Loader)            |-- GET /              -> landing
+    |-- click "Download Loader"               |-- GET /Loader.exe    -> public
+    \-- download Loader.exe (213 KB)          |-- GET /dl/<file>     -> token
+                                              \-- PUT /upload/...    -> admin
+
+  User runs Loader.exe                       You push updates via:
+    |-- reads X-Token baked in               IsleExtServer\
+    |-- checks %APPDATA%\Mahi\ for 10         \-- deploy.bat
+    |-- downloads missing from /dl/              |-- builds Mahi + Loader
+    \-- tabs: External / DMA                     \-- uploads all to server
+
+  Click Load Driver -> launch cheat -> INSERT in game
+
+
+================================================================================
+ 2. PROJECT TREE — SOURCE (C:\Users\PC\Downloads\IsleExt\)
+================================================================================
+
+IsleExt\
+|
+|-- bin\
+|   \-- Loader.exe              Compiled loader (213 KB, thin client).
+|                                 Uploaded to server public\.
+|
+\-- src\
+    |-- main.cpp                
+    |                              
+    |                              
+    |
+    |-- loader.cpp            
+    |                             
+    |                             
+    |                                
+    |                                
+    |
+    |-- driver.hpp             
+    |                              
+    |
+    |-- secrets.hpp             
+    |                             
+    |
+    |-- keyauth.hpp            
+    |                             
+    |
+    |-- protection.hpp         
+    |                           
+    |
+    |-- offsets.hpp            
+    |-- globals.hpp            
+    |-- bootstrap.hpp          
+    |-- fname.hpp               
+    |-- camera.hpp             
+    |-- math.hpp               
+    |
+    |-- esp_entity.hpp          
+    |-- esp_filter.hpp          
+    |-- esp_layout.hpp          
+    |
+    |-- aimbot.hpp              
+    |-- misc.hpp               
+    |-- misc_sky.hpp            
+    |-- cheat.hpp               
+    |
+    |-- overlay.hpp             
+    |                              
+    |                              
+    |-- mahi_colors.hpp        
+    |                             
+    |-- map.hpp                 
+    |                              
+    |
+    \-- obj\                    
+
+
+================================================================================
+ 3. PROJECT TREE — SERVER / BUILD HUB (C:\Users\PC\Downloads\IsleExtServer\)
+================================================================================
+
+IsleExtServer\
+|
+|-- deploy.bat                  * DOUBLE-CLICK THIS TO SHIP UPDATES
+|                                  Calls deploy.ps1.
+|
+|-- deploy.ps1                  Builds both EXEs then runs upload.ps1:
+|                                  1. Compiles main.cpp   -> %APPDATA%\Mahi\IsleExt.exe
+|                                  2. Compiles loader.cpp -> IsleExt\bin\Loader.exe
+|                                  3. Calls upload.ps1
+|
+|-- upload.ps1                  Pushes 10 files to Railway via raw PUT:
+|                                  Loader.exe  -> server public\
+|                                  index.html  -> server public\
+|                                  other 8     -> server private\
+|
+|-- server.js                   Express server running on Railway.
+|                                  Routes:
+|                                    GET  /                    -> landing page
+|                                    GET  /Loader.exe          -> public download
+|                                    GET  /dl/<file>           -> token-gated (X-Token header)
+|                                    PUT  /upload/<key>/<file> -> admin only
+|                                    GET  /list                -> JSON listing
+|
+|-- package.json                Node dependencies (express, multer).
+|-- package-lock.json           Locked dependency versions.
+|
+|-- public\                     Uploaded by upload.ps1 (server-side only):
+|   |-- index.html              Landing page — title "Mahi Loader".
+|   \-- Loader.exe              Uploaded.
+|
+|-- private\                    Uploaded by upload.ps1 (server-side only):
+|   |-- IsleExt.exe             external cheat
+|   |-- IsleDma.exe             DMA cheat
+|   |-- gabyzuum.sys            kernel driver
+|   |-- kdmapper.exe            driver loader
+|   |-- vmm.dll                 DMA library
+|   |-- leechcore.dll           DMA library
+|   |-- FTD3XX.dll              FTDI USB driver
+|   \-- map.png                 The Isle map
+|
+|-- secrets.txt                 * KEEP PRIVATE. Contains:
+|                                  SHARED_TOKEN (auth for /dl/)
+|                                  ADMIN_KEY    (auth for /upload/)
+|                                  Also backed up to Documents\.
+|
+\-- README.txt                  Quick deploy instructions.
+
+
+================================================================================
+ 4. PROJECT TREE — DMA CHEAT SOURCE (C:\Users\PC\Downloads\TheIsleDma\Ice\)
+================================================================================
+
+TheIsleDma\Ice\
+|
+|-- bin\
+|   \-- IsleDma.exe             Compiled DMA cheat (566 KB).
+|
+\-- src\
+    |-- main.cpp                Entry point of IsleDma.exe.
+    |-- dma.hpp                 VMM/MemProcFS interface (FPGA hardware).
+    |-- overlay.hpp             Same rendering code as the external's.
+    |                              Menu title "Mahi".
+    |-- camera.hpp
+    |-- offsets.hpp
+    |-- globals.hpp
+    |-- fname.hpp
+    |-- math.hpp
+    |-- esp_entity.hpp
+    |-- esp_filter.hpp
+    |-- esp_layout.hpp
+    |-- aimbot.hpp
+    |-- misc.hpp
+    |-- misc_sky.hpp
+    |-- cheat.hpp
+    |-- mahi_colors.hpp
+    |-- map.hpp
+    |-- keyauth.hpp             Same KeyAuth system.
+    |-- secrets.hpp
+    |-- protection.hpp
+    |-- probe.hpp
+    |-- self_install.hpp        Auto-copies self to %APPDATA%\Mahi\ on first run.
+    |-- updater.hpp             Auto-downloads new exe from server.
+    \-- _build.bat              Builds ..\bin\IsleDma.exe.
+
+How the DMA version differs:
+  dma.hpp talks to FPGA hardware via vmm.dll + leechcore.dll,
+  instead of a kernel driver. All other code is identical.
+
+
+================================================================================
+ 5. RUNTIME TREE (%APPDATA%\Mahi\)
+================================================================================
+
+%APPDATA%\Mahi\
+|
+|-- IsleExt.exe           External cheat (downloaded from /dl/)
+|-- IsleDma.exe           DMA cheat    (downloaded from /dl/)
+|-- gabyzuum.sys          Kernel driver (downloaded from /dl/)
+|-- kdmapper.exe          Driver loader (downloaded from /dl/)
+|-- vmm.dll               DMA library  (downloaded from /dl/)
+|-- leechcore.dll         DMA library  (downloaded from /dl/)
+|-- FTD3XX.dll            FTDI USB driver (downloaded from /dl/)
+|-- map.png               The Isle map image (downloaded from /dl/)
+|
+|-- key.dat               Saved KeyAuth license.
+|-- 1.ini                 Default config (auto-saved when you change toggles).
+|-- <name>.ini            Any named configs you save.
+|-- autoload.txt          Which config to load on startup.
+\-- map.png.orig          (optional) backup if you ever downscale.
+
+Who writes here:
+  - Loader.exe writes the 8 runtime files on first launch.
+  - IsleExt.exe / IsleDma.exe write configs, key.dat, autoload.txt.
+  - Users delete this folder to start fresh.
+
+
+================================================================================
+ 6. EXTERNAL SERVICES
+================================================================================
+
+1) Railway  --  https://mahi-production-059f.up.railway.app
+   - Hosts server.js
+   - Runs 24/7 on their free tier
+   - Has two env vars: SHARED_TOKEN, ADMIN_KEY
+   - Contains the 10 files after upload.ps1 runs
+   - Landing page title: "Mahi Loader"
+
+2) KeyAuth  --  keyauth.win
+   - Your cheat's license backend.
+   - secrets.hpp contains encoded KA_NAME, KA_OWNER, KA_HOST.
+   - IsleExt.exe and IsleDma.exe both verify on launch.
+   - Heartbeat loop re-checks every 5 minutes.
+
+
+================================================================================
+ 7. DATA FLOW — ADMIN UPDATE
+================================================================================
+
+  You edit IsleExt\src\overlay.hpp
+        |
+        v
+  Double-click IsleExtServer\deploy.bat
+        |
+        v
+  deploy.ps1:
+    1. Compiles main.cpp   -> %APPDATA%\Mahi\IsleExt.exe
+    2. Compiles loader.cpp -> IsleExt\bin\Loader.exe
+        |
+        v
+  upload.ps1:
+    3. PUT Loader.exe   -> server public\  (anyone can download)
+    4. PUT index.html   -> server public\  (landing page)
+    5. PUT IsleExt.exe  -> server private\ (token-gated)
+    6. PUT 7 others     -> server private\
+
+
+================================================================================
+ 8. DATA FLOW — USER FIRST LAUNCH
+================================================================================
+
+  User double-clicks Loader.exe
+        |
+        v
+  Loader reads embedded SHARED_TOKEN + UpdateUrl()
+        |
+        v
+  Loader window title: "Mahi"
+        |
+        v
+  Checks %APPDATA%\Mahi\ for each of 8 files
+        |
+        v
+  Missing -> HTTP GET https://.../dl/<file> with X-Token header
+        |
+        v
+  Server: header matches SHARED_TOKEN -> serve file
+        |
+        v
+  Loader writes file to %APPDATA%\Mahi\
+        |
+        v
+  All 8 present -> show tabs
+        |
+        v
+  User clicks "Load Driver" -> kdmapper.exe gabyzuum.sys (UAC)
+        |
+        v
+  User clicks "Launch Cheat" -> CreateProcess IsleExt.exe
+        |
+        v
+  IsleExt authenticates to KeyAuth -> runs
+
+
+================================================================================
+ 9. DATA FLOW — CHEAT RUNS
+================================================================================
+
+  IsleExt.exe launches
+        |
+        v
+  Protection::Init()          (anti-debug check)
+  KeyAuth::Init() / License() (verify against keyauth.win)
+        |
+        v
+  DMA::Init() -> CreateFile("\\.\staydetected")   <- kernel driver
+  DMA::AttachProcess("TheIsleClient-Win64-Shipping.exe")
+        |
+        v
+  Bootstrap() reads GWorld/GNames/GObjects from game
+        |
+        v
+  EntityThread + AimThread + Overlay start
+        |
+        v
+  Press INSERT -> overlay.hpp opens the menu (title: "Mahi")
+
+
+================================================================================
+ 10. SECURITY BOUNDARIES
+================================================================================
+
+  Resource                 Where                        Access
+  -----------------------  ---------------------------  -------------------
+  Landing page             https://.../                 anyone
+  Loader.exe               https://.../Loader.exe       anyone
+  8 runtime files          https://.../dl/<file>        only if X-Token
+                                                        matches SHARED_TOKEN
+  Upload endpoint          https://.../upload/<key>/..  only if key matches
+                                                        ADMIN_KEY
+  secrets.txt              IsleExtServer\secrets.txt    only you (on disk)
+  SHARED_TOKEN             baked into Loader.exe        anyone with the
+                                                        loader can extract,
+                                                        but cannot upload
+  ADMIN_KEY                secrets.txt + your shell     only you
+
+
+================================================================================
+ 11. THINGS THAT MATTER MOST
+================================================================================
+
+  Three folders:
+    - IsleExt\              source you edit
+    - IsleExtServer\        build + deploy + secrets
+    - TheIsleDma\Ice\       DMA source (secondary)
+
+  One file:
+    - IsleExtServer\secrets.txt   -- BACK IT UP
+                                     Losing it = rebuilding the server
+                                     + shipping a new loader.
+
+  One command:
+    - IsleExtServer\deploy.bat    -- your entire deploy workflow
+                                     double-click and wait
+
+  One URL:
+    - https://mahi-production-059f.up.railway.app
+                                     the only thing you share with users
+
+
+================================================================================
+ 12. QUICK REFERENCE — HOW TO DO THINGS
+================================================================================
+
+  Ship an update:
+    Double-click  IsleExtServer\deploy.bat
+
+  Run the external for debugging:
+    & "$env:APPDATA\Mahi\IsleExt.exe" debug
+
+  Run the DMA for debugging:
+    & "$env:APPDATA\Mahi\IsleDma.exe"
+
+  Run the loader:
+    & "C:\Users\PC\Downloads\IsleExt\bin\Loader.exe"
+
+  Rebuild only the DMA:
+    cmd /c 'C:\Users\PC\Downloads\TheIsleDma\Ice\src\_build.bat'
+
+  Wipe runtime + test fresh install:
+    Rename  %APPDATA%\Mahi  to  Mahi.bak
+    Run  IsleExt\bin\Loader.exe  and watch it download all 8.
+
+  Rotate the shared token:
+    Edit  IsleExtServer\secrets.txt  -> new SHARED_TOKEN
+    railway variables set SHARED_TOKEN=<new>
+    Rebuild + upload (deploy.bat)   -> new loader has new token inside
+
+  Rotate the admin key:
+    Edit  IsleExtServer\secrets.txt  -> new ADMIN_KEY
+    railway variables set ADMIN_KEY=<new>
+    Update upload.ps1 to use the new key
+
+
+================================================================================
+ 13. NAMING SUMMARY (after the Mahi rebrand)
+================================================================================
+
+  What the user sees:
+    Loader window title .............. "Mahi" / "loader"
+    In-game menu title ............... "Mahi"
+    Landing page ..................... "Mahi Loader"
+    Config folder .................... %APPDATA%\Mahi\
+
+  Under the hood (files on disk):
+    External cheat exe ............... IsleExt.exe
+    DMA cheat exe .................... IsleDma.exe
+    Loader exe ....................... Loader.exe
+    Driver ........................... gabyzuum.sys
+    Driver loader .................... kdmapper.exe
+    DMA libraries .................... vmm.dll, leechcore.dll, FTD3XX.dll
+    Map image ........................ map.png
+    Landing page ..................... index.html
+
+  Source folders (unchanged names, purely cosmetic):
+    IsleExt\                           External + Loader source
+    IsleExtServer\                     Server + build hub
+    TheIsleDma\Ice\                    DMA source
+
+
+================================================================================
+ END
+================================================================================
